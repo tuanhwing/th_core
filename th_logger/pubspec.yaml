@@ -1,5 +1,5 @@
-name: th_core
-description: A TH Core Flutter package.
+name: th_logger
+description: A Logger Flutter package.
 version: 0.0.1
 homepage:
 
@@ -11,13 +11,12 @@ dependencies:
   flutter:
     sdk: flutter
 
-  dio: 4.0.0
-  th_logger:
-    path: ./th_logger
+  logger: 1.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^1.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

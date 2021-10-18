@@ -1,5 +1,5 @@
-name: th_core
-description: A TH Core Flutter package.
+name: th_network
+description: A th_network Flutter package.
 version: 0.0.1
 homepage:
 
@@ -13,11 +13,12 @@ dependencies:
 
   dio: 4.0.0
   th_logger:
-    path: ./th_logger
+    path: ../th_logger
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^1.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
