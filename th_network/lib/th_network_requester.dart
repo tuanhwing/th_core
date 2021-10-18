@@ -1,6 +1,8 @@
 
 import 'package:dio/dio.dart';
 import 'package:th_logger/th_logger.dart';
+import 'package:th_network/common/th_network_defines.dart';
+import 'package:th_secure_storage/th_secure_storage.dart' as th_storage;
 
 import 'network/network.dart';
 import 'common/common.dart';
@@ -17,6 +19,7 @@ class THNetworkRequester {
   final Dio _tokenDio = Dio();
   final Dio _dio = Dio();
   final List<THNetworkListener> _listeners = [];
+  final storage = const th_storage.FlutterSecureStorage();
   Future<THResponse>? _refreshTokenFuture;
   int _reSubmitterCount = 0;
 
@@ -32,10 +35,10 @@ class THNetworkRequester {
   }
 
   ///Initializes [THNetworkRequester] instance by [baseURL] and [connectTimeout], [receiveTimeout]
-  void initialize(String baseURL, {
+  Future<void> initialize(String baseURL, {
     int connectTimeout=5000,
     int receiveTimeout=3000,
-    String refreshTokenPath="/refresh_token"}) {
+    String refreshTokenPath="/refresh_token"}) async {
     if (_request != null) return;
     _refreshTokenPath = refreshTokenPath;
 
@@ -99,6 +102,10 @@ class THNetworkRequester {
     ));
 
     _request = THRequest(_dio);
+
+    //Read token value
+    _token = await storage.read(key: THNetworkDefines.tokenKey);
+    _refreshToken = await storage.read(key: THNetworkDefines.refreshTokenKey);
   }
 
   ///Fetch request
@@ -125,6 +132,8 @@ class THNetworkRequester {
       case THRequestMethods.patch:
         thResponse = await _request!.patch(path, data: data, queryParameters: queryParameters, options: options);
         break;
+      case THRequestMethods.multipart:
+        break;
     }
     
     return thResponse;
@@ -145,18 +154,28 @@ class THNetworkRequester {
   }
 
 
+  ///Set token
   Future setToken(String token, String refreshToken) async {
     _token = token;
     _refreshToken = refreshToken;
+
+    // Write token
+    await storage.write(key: THNetworkDefines.tokenKey, value: _token);
+    await storage.write(key: THNetworkDefines.refreshTokenKey, value: _refreshToken);
+  }
+
+  ///Delete token
+  Future removeToken() async {
+    _refreshToken = null;
+    _token = null;
+
+    // Write token
+    await storage.delete(key: THNetworkDefines.tokenKey);
+    await storage.delete(key: THNetworkDefines.refreshTokenKey);
   }
 
   void addListener(THNetworkListener listener) => _listeners.add(listener);
   void removeListener(THNetworkListener listener) => _listeners.remove(listener);
-
-  Future removeToken() async {
-    _refreshToken = null;
-    _token = null;
-  }
 
   ///Perform network request
   Future<THResponse<T>> executeRequest<T>(
