@@ -5,12 +5,16 @@ import 'package:th_network/th_network.dart';
 
 void main() {
 
-  Future<void> _getInfo() async {
+  setUp(() {
+    THNetworkRequester().initialize("http://myapi-dev.com.vn");
+  });
+
+  test('get', () async {
     THResponse response = await THNetworkRequester().executeRequest(THRequestMethods.get, "/front/api/v1/settings/", queryParameters: {"attr_name": "Contact"});
     expect(response.code, 0);
-  }
+  });
 
-  Future<void> _login() async {
+  test('post', () async {
     final deviceInfo = {
       "device_code" : "device_code",
       'device_model': "deviceModel",
@@ -29,16 +33,5 @@ void main() {
     );
     expect(response.code, 0);
     expect(response.statusCode, 200);
-  }
-
-  test('test api', () async {
-    THNetworkRequester().initialize("http://myapi-dev.com.vn");
-
-    //Get method
-    await _getInfo();
-
-    //Post method
-    await _login();
-
   });
 }
