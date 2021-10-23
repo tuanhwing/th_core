@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:th_network/network/network.dart';
 
@@ -30,6 +31,21 @@ void main() {
           "password" : "dev",
           "device" : deviceInfo
         }
+    );
+    expect(response.code, 0);
+    expect(response.statusCode, 200);
+  });
+
+  test('upload file', () async {
+
+    var formData = FormData.fromMap({
+      "transfer_type" : 1,
+      "file": await MultipartFile.fromFile("test/resources/receipt.jpeg", filename: "receipt")
+    });
+    THResponse response = await THNetworkRequester().executeRequest(
+        THRequestMethods.post,
+        "/front/api/v1/receipt/reco",
+        data: formData
     );
     expect(response.code, 0);
     expect(response.statusCode, 200);
