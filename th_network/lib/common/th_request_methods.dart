@@ -5,5 +5,4 @@ enum THRequestMethods {
   put,
   delete,
   patch,
-  multipart
 }
