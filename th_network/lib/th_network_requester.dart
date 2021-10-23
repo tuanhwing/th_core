@@ -132,6 +132,8 @@ class THNetworkRequester {
       case THRequestMethods.patch:
         thResponse = await _request!.patch(path, data: data, queryParameters: queryParameters, options: options);
         break;
+      case THRequestMethods.multipart:
+        break;
     }
     
     return thResponse;
