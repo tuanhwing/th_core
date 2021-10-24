@@ -4,14 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
 class THLogger {
-  static final THLogger _singleton = THLogger._internal();
+  static final THLogger _singleton = THLogger._();
 
   factory THLogger() {
     return _singleton;
   }
-
-  THLogger._internal();
-
+  THLogger._();
   final _logger = Logger();
 
   /// Log a message at level [Level.debug].

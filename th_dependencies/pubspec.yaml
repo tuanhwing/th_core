@@ -1,5 +1,5 @@
-name: th_secure_storage
-description: A Secure Storage Flutter package.
+name: th_dependencies
+description: A TH Dependencies Flutter package.
 version: 0.0.1
 homepage:
 
@@ -13,6 +13,7 @@ dependencies:
 
   flutter_secure_storage: 4.2.1
   shared_preferences: 2.0.8
+  get_it: 7.2.0
 
 dev_dependencies:
   flutter_test:

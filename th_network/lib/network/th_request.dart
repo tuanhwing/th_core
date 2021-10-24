@@ -24,8 +24,6 @@ class THRequest {
   ///Parse response object
   THResponse<T> _parseResponse<T>(Response? response) {
     if (response == null) return THResponse.systemError();
-
-    THLogger().v("_parseResponse status:${response.statusCode} data:${response.data}");
     THResponse<T> result = THResponse<T>.fromJson(response);
 
     return result;

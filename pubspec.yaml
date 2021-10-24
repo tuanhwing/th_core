@@ -12,9 +12,14 @@ dependencies:
   flutter:
     sdk: flutter
 
-  dio: 4.0.0
   th_logger:
     path: ./th_logger
+
+  th_dependencies:
+    path: ./th_dependencies
+
+  th_network:
+    path: ./th_network
 
 dev_dependencies:
   flutter_test:

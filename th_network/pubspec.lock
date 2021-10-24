@@ -100,6 +100,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  get_it:
+    dependency: transitive
+    description:
+      name: get_it
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.2.0"
   http_parser:
     dependency: transitive
     description:
@@ -280,17 +287,17 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.2"
+  th_dependencies:
+    dependency: "direct main"
+    description:
+      path: "../th_dependencies"
+      relative: true
+    source: path
+    version: "0.0.1"
   th_logger:
     dependency: "direct main"
     description:
       path: "../th_logger"
-      relative: true
-    source: path
-    version: "0.0.1"
-  th_secure_storage:
-    dependency: "direct main"
-    description:
-      path: "../th_secure_storage"
       relative: true
     source: path
     version: "0.0.1"
