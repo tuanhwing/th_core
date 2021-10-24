@@ -16,8 +16,8 @@ dependencies:
   th_logger:
     path: ../th_logger
 
-  th_secure_storage:
-    path: ../th_secure_storage
+  th_dependencies:
+    path: ../th_dependencies
 
 dev_dependencies:
   flutter_test:

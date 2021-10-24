@@ -1,25 +1,27 @@
 
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:th_logger/th_logger.dart';
 import 'package:th_network/common/th_network_defines.dart';
-import 'package:th_secure_storage/th_secure_storage.dart' as th_storage;
+import 'package:th_dependencies/th_dependencies.dart' as th_dependencies;
 
 import 'network/network.dart';
 import 'common/common.dart';
 
 class THNetworkRequester {
-  static final THNetworkRequester _singleton = THNetworkRequester._internal();
-  factory THNetworkRequester() {
-    return _singleton;
-  }
-  THNetworkRequester._internal();
+  // static final THNetworkRequester _singleton = THNetworkRequester._internal();
+  // factory THNetworkRequester() {
+  //   return _singleton;
+  // }
+  // THNetworkRequester._internal();
 
-  THRequest? _request;
+  late THRequest? _request;
   String? _refreshTokenPath;
   final Dio _tokenDio = Dio();
   final Dio _dio = Dio();
   final List<THNetworkListener> _listeners = [];
-  final storage = const th_storage.FlutterSecureStorage();
+  final th_dependencies.FlutterSecureStorage storage;
   Future<THResponse>? _refreshTokenFuture;
   int _reSubmitterCount = 0;
 
@@ -27,19 +29,10 @@ class THNetworkRequester {
   String? _refreshToken;
   String? get token => _token;
 
-  ///Notify all listeners
-  void _notifyListeners() {
-    for (var element in _listeners) {
-      element.sessionExpired();
-    }
-  }
-
-  ///Initializes [THNetworkRequester] instance by [baseURL] and [connectTimeout], [receiveTimeout]
-  Future<void> initialize(String baseURL, {
+  THNetworkRequester(String baseURL, this.storage, {
     int connectTimeout=5000,
     int receiveTimeout=3000,
-    String refreshTokenPath="/refresh_token"}) async {
-    if (_request != null) return;
+    String refreshTokenPath="/refresh_token"}) {
     _refreshTokenPath = refreshTokenPath;
 
     //Options
@@ -53,55 +46,67 @@ class THNetworkRequester {
     _tokenDio.options.receiveTimeout = receiveTimeout;
 
     _tokenDio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) {
-        options.headers['Authorization'] = "Bearer $_refreshToken";
-        return handler.next(options);
-      },
-      onResponse: (response, handler) {
-        THLogger().d("[REFRESH_TOKEN]REQUEST\nmethod: ${response.requestOptions.method}\n"
-            "path: ${response.requestOptions.path}\nheaders:${response.requestOptions.headers}\n"
-            "RESPONSE\nstatusCode: ${response.statusCode}\ndata: ${response.data}");
-        
-        //Update new token
-        setToken(response.data['data']['token'], response.data['data']['refresh_token']);
-        _dio.interceptors.requestLock.unlock();
-        return handler.next(response);
-      },
-      onError: (DioError error, handler) {
-        THLogger().d("[REFRESH_TOKEN]DioError\ntype: ${error.type}\nmessage: ${error.message}\n\n"
-            "RESPONSE\nstatusCode: ${error.response?.statusCode}\ndata: ${error.response?.data}");
-        _dio.interceptors.requestLock.clear();
-        if (error.response?.statusCode == 401) {//Session expired
-          _notifyListeners();
+        onRequest: (options, handler) {
+          options.headers['Authorization'] = "Bearer $_refreshToken";
+          return handler.next(options);
+        },
+        onResponse: (response, handler) {
+          THLogger().d("[REFRESH_TOKEN]REQUEST\nmethod: ${response.requestOptions.method}\n"
+              "path: ${response.requestOptions.path}\nheaders:${response.requestOptions.headers}\n"
+              "RESPONSE\nstatusCode: ${response.statusCode}\ndata: ${response.data}");
+
+          //Update new token
+          setToken(response.data['data']['token'], response.data['data']['refresh_token']);
+          _dio.interceptors.requestLock.unlock();
+          return handler.next(response);
+        },
+        onError: (DioError error, handler) {
+          THLogger().d("[REFRESH_TOKEN]DioError\ntype: ${error.type}\nmessage: ${error.message}\n\n"
+              "RESPONSE\nstatusCode: ${error.response?.statusCode}\ndata: ${error.response?.data}");
+          _dio.interceptors.requestLock.clear();
+          if (error.response?.statusCode == 401) {//Session expired
+            _notifyListeners();
+          }
+          return handler.next(error);
         }
-        return handler.next(error);
-      }
     ));
 
 
     //Instance to request network.
     _dio.interceptors.add(InterceptorsWrapper(
-      onRequest: (options, handler) {
-        options.headers['Authorization'] = "Bearer $_token";
-        return handler.next(options);
-      },
-      onResponse: (response, handler) {
-        THLogger().d("REQUEST\nmethod: ${response.requestOptions.method}\n"
-            "path: ${response.requestOptions.path}\nheaders:${response.requestOptions.headers}\n"
-            "queryParameters: ${response.requestOptions.queryParameters}\ndata: ${response.requestOptions.data}\n\n\n"
-            "RESPONSE\nstatusCode: ${response.statusCode}\ndata: ${response.data}");
-        return handler.next(response);
-      },
-      onError: (DioError error, handler) {
-        THLogger().d("DioError\ntype: ${error.type}\nmessage: ${error.message}\n\n"
-            "REQUEST\npath: ${error.requestOptions.path}\n\n"
-            "RESPONSE\nstatusCode: ${error.response?.statusCode}\ndata: ${error.response?.data}");
+        onRequest: (options, handler) {
+          options.headers['Authorization'] = "Bearer $_token";
+          return handler.next(options);
+        },
+        onResponse: (response, handler) {
+          THLogger().d("REQUEST\nmethod: ${response.requestOptions.method}\n"
+              "path: ${response.requestOptions.path}\nheaders:${response.requestOptions.headers}\n"
+              "queryParameters: ${response.requestOptions.queryParameters}\ndata: ${response.requestOptions.data}\n\n\n"
+              "RESPONSE\nstatusCode: ${response.statusCode}\ndata: ${response.data}");
+          return handler.next(response);
+        },
+        onError: (DioError error, handler) {
+          THLogger().d("DioError\ntype: ${error.type}\nmessage: ${error.message}\n\n"
+              "REQUEST\npath: ${error.requestOptions.path}\nheaders:${error.requestOptions.headers}"
+              "queryParameters: ${error.requestOptions.queryParameters}\ndata: ${error.requestOptions.data}\n\n "
+              "RESPONSE\nstatusCode: ${error.response?.statusCode}\ndata: ${error.response?.data}");
 
-        return handler.next(error);
-      }
+          return handler.next(error);
+        }
     ));
 
     _request = THRequest(_dio);
+  }
+
+  ///Notify all listeners
+  void _notifyListeners() {
+    for (var element in _listeners) {
+      element.sessionExpired();
+    }
+  }
+
+  ///Initializes [THNetworkRequester] instance by [baseURL] and [connectTimeout], [receiveTimeout]
+  Future<void> initialize() async {
 
     //Read token value
     _token = await storage.read(key: THNetworkDefines.tokenKey);
