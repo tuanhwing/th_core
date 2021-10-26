@@ -105,7 +105,7 @@ class THNetworkRequester {
     }
   }
 
-  ///Initializes [THNetworkRequester] instance by [baseURL] and [connectTimeout], [receiveTimeout]
+  ///Initializes [THNetworkRequester] instance
   Future<void> initialize() async {
 
     //Read token value

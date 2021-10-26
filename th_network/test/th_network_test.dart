@@ -10,17 +10,17 @@ void main() {
   THNetworkRequester _requester;
 
   setUp(() {
-    // _requesterFuture = THNetwork.getInstance("http://myapi-dev.com.vn", const FlutterSecureStorage());
+    _requesterFuture = THNetwork.getInstance("http://myapi-dev.com.vn", const FlutterSecureStorage());
   });
 
   test('get', () async {
-    _requester = await THNetwork.getInstance("http://myapi-dev.com.vn", const FlutterSecureStorage());
+    _requester = await _requesterFuture!;
     THResponse response = await _requester.executeRequest(THRequestMethods.get, "/front/api/v1/settings/", queryParameters: {"attr_name": "Contact"});
     expect(response.code, 0);
   });
 
   test('post', () async {
-    _requester = await THNetwork.getInstance("http://myapi-dev.com.vn", const FlutterSecureStorage());
+    _requester = await _requesterFuture!;
     final deviceInfo = {
       "device_code" : "device_code",
       'device_model': "deviceModel",
