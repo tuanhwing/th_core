@@ -12,11 +12,11 @@ dependencies:
   flutter:
     sdk: flutter
 
-  th_logger:
-    path: ./th_logger
-
   th_dependencies:
     path: ./th_dependencies
+
+  th_logger:
+    path: ./th_logger
 
   th_network:
     path: ./th_network
@@ -24,6 +24,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  lint: ^1.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
