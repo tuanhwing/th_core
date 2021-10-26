@@ -24,7 +24,7 @@ void main() {
       final person = Person(1, 'Simon');
       await personDao.insertPerson(person);
 
-      final actual = await personDao.findPersonById(person.id);
+      final actual = personDao.findPersonById(person.id);
       final firstPerson = await actual.first;
 
       expect(firstPerson?.id, equals(1));
