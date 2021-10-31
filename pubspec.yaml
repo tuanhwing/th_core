@@ -9,8 +9,10 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  easy_localization: 3.0.0
   flutter:
     sdk: flutter
+  flutter_bloc: 7.3.1
 
   th_dependencies:
     path: ./th_dependencies
