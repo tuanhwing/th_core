@@ -1,5 +1,6 @@
 library th_core;
 
+export 'package:easy_localization/easy_localization.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:th_dependencies/th_dependencies.dart';
 export 'package:th_logger/th_logger.dart';
