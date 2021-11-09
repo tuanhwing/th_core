@@ -22,6 +22,7 @@ class THInjector {
     _injector.registerLazySingleton<SharedPreferences>(() => _prefs);
 
     _injector.registerFactory<THPageCubit>(() => THPageCubit());
+    _injector.registerSingleton<THConnectivityCubit>(THConnectivityCubit());
 
     //Network requester
     final THNetworkRequester requester = await THNetwork.getInstance(

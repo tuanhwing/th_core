@@ -41,6 +41,23 @@ abstract class THState<FWidget extends StatefulWidget, Bloc extends THBaseBloc>
   ///Floating widget of page
   Widget? get floatingActionButton => null;
 
+  ///Network unavailable widget
+  Widget get networkOfflineWidget => SafeArea(
+    child: Container(
+      color: themeData.disabledColor.withOpacity(THDimens.size05),
+      padding: const EdgeInsets.symmetric(
+        vertical: THDimens.size8,
+      ),
+      alignment: Alignment.center,
+      child: Text(
+        tr('network_unavailable'),
+        style: themeData.textTheme.subtitle1!.apply(
+            color: themeData.disabledColor,
+        ),
+      ),
+    ),
+  );
+
   ///Loading widget
   Widget get loadingWidget => ColoredBox(
         color: themeData.primaryColorDark.withOpacity(0.1),
@@ -163,6 +180,9 @@ abstract class THState<FWidget extends StatefulWidget, Bloc extends THBaseBloc>
   /// The application is in an inactive state and is not receiving user input.
   void onInactive() {}
 
+  ///The network connectivity changed
+  void onNetworkStatusChanged(THConnectivityState state) {}
+
   @override
   @mustCallSuper
   void initState() {
@@ -173,6 +193,9 @@ abstract class THState<FWidget extends StatefulWidget, Bloc extends THBaseBloc>
 
     // Add the observer
     WidgetsBinding.instance!.addObserver(this);
+
+    // Check current network status
+    GetIt.I.get<THConnectivityCubit>().checkCurrentStatus();
 
     SchedulerBinding.instance!.addPostFrameCallback((Duration duration) {
       onPostFrame();
@@ -187,7 +210,24 @@ abstract class THState<FWidget extends StatefulWidget, Bloc extends THBaseBloc>
         builder: (BuildContext context) {
           return Scaffold(
             appBar: appBar,
-            body: content,
+            body: Column(
+              children: <Widget>[
+                BlocConsumer<THConnectivityCubit, THConnectivityState>(
+                  listener: (_, THConnectivityState state) {
+                    THLogger().d(state.toString());
+                    onNetworkStatusChanged(state);
+                  },
+                  builder: (_, THConnectivityState state) {
+                    Widget networkWidget = const SizedBox();
+                    if (state is THOfflineNetworkState) {
+                      networkWidget = networkOfflineWidget;
+                    }
+                    return networkWidget;
+                  },
+                ),
+                content,
+              ],
+            ),
             floatingActionButton: floatingActionButton,
           );
         },
