@@ -26,6 +26,7 @@ abstract class THModule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    THLogger().d("${this.runtimeType.toString()} build");
     return WillPopScope(
         onWillPop: () => _onWillPop(context),
         child: Navigator(

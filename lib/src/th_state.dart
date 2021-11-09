@@ -41,6 +41,10 @@ abstract class THState<FWidget extends StatefulWidget, Bloc extends THBaseBloc>
   ///Floating widget of page
   Widget? get floatingActionButton => null;
 
+  ///The scaffold's floating widgets should size
+  ///themselves to avoid the onscreen keyboard whose height is defined
+  bool get resizeToAvoidBottomInset => true;
+
   ///Network unavailable widget
   Widget get networkOfflineWidget => SafeArea(
     child: Container(
@@ -208,27 +212,33 @@ abstract class THState<FWidget extends StatefulWidget, Bloc extends THBaseBloc>
       value: bloc,
       child: Builder(
         builder: (BuildContext context) {
-          return Scaffold(
-            appBar: appBar,
-            body: Column(
-              children: <Widget>[
-                BlocConsumer<THConnectivityCubit, THConnectivityState>(
-                  listener: (_, THConnectivityState state) {
-                    THLogger().d(state.toString());
-                    onNetworkStatusChanged(state);
-                  },
-                  builder: (_, THConnectivityState state) {
-                    Widget networkWidget = const SizedBox();
-                    if (state is THOfflineNetworkState) {
-                      networkWidget = networkOfflineWidget;
-                    }
-                    return networkWidget;
-                  },
-                ),
-                content,
-              ],
+          return GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: Scaffold(
+              appBar: appBar,
+              resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+              body: Column(
+                children: <Widget>[
+                  BlocConsumer<THConnectivityCubit, THConnectivityState>(
+                    listener: (_, THConnectivityState state) {
+                      THLogger().d(state.toString());
+                      onNetworkStatusChanged(state);
+                    },
+                    builder: (_, THConnectivityState state) {
+                      Widget networkWidget = const SizedBox();
+                      if (state is THOfflineNetworkState) {
+                        networkWidget = networkOfflineWidget;
+                      }
+                      return networkWidget;
+                    },
+                  ),
+                  Expanded(child: content),
+                ],
+              ),
+              floatingActionButton: floatingActionButton,
             ),
-            floatingActionButton: floatingActionButton,
           );
         },
       ),
@@ -236,9 +246,11 @@ abstract class THState<FWidget extends StatefulWidget, Bloc extends THBaseBloc>
   }
 
   @override
+  @mustCallSuper
   void dispose() {
     // Remove the observer
     WidgetsBinding.instance!.removeObserver(this);
+    bloc.dispose();
 
     super.dispose();
   }
