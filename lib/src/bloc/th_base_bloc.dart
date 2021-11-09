@@ -15,4 +15,7 @@ abstract class THBaseBloc<Event, State> extends Bloc<Event, State> {
 
   ///Get THPage
   THPageCubit get pageCubit => _pageCubit;
+
+  ///Dispose function
+  void dispose() {}
 }
