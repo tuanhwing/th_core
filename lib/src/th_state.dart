@@ -41,6 +41,9 @@ abstract class THState<FWidget extends StatefulWidget, Bloc extends THBaseBloc>
   ///Floating widget of page
   Widget? get floatingActionButton => null;
 
+  ///Bottom navigation bar
+  Widget? get bottomNavigationBar => null;
+
   ///The scaffold's floating widgets should size
   ///themselves to avoid the onscreen keyboard whose height is defined
   bool get resizeToAvoidBottomInset => true;
@@ -238,6 +241,7 @@ abstract class THState<FWidget extends StatefulWidget, Bloc extends THBaseBloc>
                 ],
               ),
               floatingActionButton: floatingActionButton,
+              bottomNavigationBar: bottomNavigationBar,
             ),
           );
         },

@@ -1,6 +1,6 @@
 
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:th_core/th_core.dart';
 
 import '../../th_back_platform_observer.dart';
@@ -17,7 +17,25 @@ abstract class THModule extends StatelessWidget {
   String get initialRoute;
 
   ///Called to generate a route for a given [RouteSettings].
-  Route<dynamic>? generateRoutes(RouteSettings routeSettings);
+  Route<dynamic>? generateRoutes(RouteSettings routeSettings) {
+    Widget page = Scaffold(
+      body: Center(
+        child: Text(tr('not_found')),
+      ),
+    );
+
+    try {
+      page = GetIt.I.get(instanceName: routeSettings.name);
+    }
+    catch(exception) {
+      final String tag = '${runtimeType.toString()}.generateRoutes';
+      THLogger().e('$tag routeName:${routeSettings.name} exception:$exception');
+    }
+    return MaterialPageRoute<void>(
+        builder: (_) => page,
+        settings:routeSettings,
+    );
+  }
 
   Future<bool> _onWillPop(BuildContext context) async {
     _backPlatformObserver.notify();
