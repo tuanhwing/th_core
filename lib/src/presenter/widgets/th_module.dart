@@ -1,7 +1,8 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:th_core/th_core.dart';
+import 'package:th_dependencies/th_dependencies.dart';
+import 'package:th_logger/th_logger.dart';
 
 import '../../th_back_platform_observer.dart';
 
@@ -44,7 +45,7 @@ abstract class THModule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    THLogger().d("${this.runtimeType.toString()} build");
+    THLogger().d('${runtimeType.toString()} build');
     return WillPopScope(
         onWillPop: () => _onWillPop(context),
         child: Navigator(

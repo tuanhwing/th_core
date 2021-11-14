@@ -93,7 +93,7 @@ packages:
     source: hosted
     version: "4.0.0"
   easy_localization:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: easy_localization
       url: "https://pub.dartlang.org"

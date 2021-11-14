@@ -43,6 +43,4 @@ class THConnectivityCubit extends Cubit<THConnectivityState> {
   void dispose() {
     _subscription.cancel();
   }
-
-
 }

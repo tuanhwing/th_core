@@ -1,6 +1,8 @@
 
 import 'package:dio/dio.dart';
 import 'package:th_logger/th_logger.dart';
+import 'package:th_network/common/common.dart';
+import 'package:th_dependencies/th_dependencies.dart' as th_dependencies;
 
 import 'th_response.dart';
 
@@ -10,20 +12,40 @@ class THRequest {
 
   ///Handling errors
   THResponse<T> _handlingErrors<T>(DioError? error) {
-    if (error == null || error.response == null) {
+    if (error == null) {
       THLogger().e("_handlingErrors status:${error?.requestOptions} data:${error?.message}");
-      return THResponse.systemError();
+      return THResponse.somethingWentWrong();
     }
 
     THLogger().e("_handlingErrors status:${error.response?.statusCode}\nrequest:${error.requestOptions}\nheaders:${error.response?.headers}\ndata:${error.response?.data}");
-    THResponse<T> result = THResponse<T>.fromJson(error.response!);
+    THResponse<T> result = THResponse<T>();
+
+    switch(error.type) {
+      case DioErrorType.receiveTimeout:
+      case DioErrorType.connectTimeout:
+      case DioErrorType.sendTimeout:
+        result.code = THErrorCodeClient.networkError;
+        result.message = th_dependencies.tr(THErrorMessageKey.networkError);
+        break;
+      case DioErrorType.other:
+        result.code = THErrorCodeClient.somethingWentWrong;
+        result.message = th_dependencies.tr(THErrorMessageKey.somethingWentWrong);
+        break;
+      case DioErrorType.response:
+        result = THResponse<T>.fromJson(error.response!);
+        break;
+      default:
+        result.code = THErrorCodeClient.unknown;
+        result.message = th_dependencies.tr(THErrorMessageKey.unknown);
+        break;
+    }
 
     return result;
   }
 
   ///Parse response object
   THResponse<T> _parseResponse<T>(Response? response) {
-    if (response == null) return THResponse.systemError();
+    if (response == null) return THResponse.somethingWentWrong();
     THResponse<T> result = THResponse<T>.fromJson(response);
 
     return result;
@@ -40,7 +62,7 @@ class THRequest {
     }
     catch(exception) {
       THLogger().e(exception.toString());
-      return THResponse.systemError(message: exception.toString());
+      return THResponse.somethingWentWrong();
     }
   }
 
@@ -55,7 +77,7 @@ class THRequest {
     }
     catch(exception) {
       THLogger().e(exception.toString());
-      return THResponse.systemError(message: exception.toString());
+      return THResponse.somethingWentWrong();
     }
   }
 
@@ -70,7 +92,7 @@ class THRequest {
     }
     catch(exception) {
       THLogger().e(exception.toString());
-      return THResponse.systemError(message: exception.toString());
+      return THResponse.somethingWentWrong();
     }
   }
 
@@ -85,7 +107,7 @@ class THRequest {
     }
     catch(exception) {
       THLogger().e(exception.toString());
-      return THResponse.systemError(message: exception.toString());
+      return THResponse.somethingWentWrong();
     }
   }
 
@@ -100,7 +122,7 @@ class THRequest {
     }
     catch(exception) {
       THLogger().e(exception.toString());
-      return THResponse.systemError(message: exception.toString());
+      return THResponse.somethingWentWrong();
     }
   }
 }

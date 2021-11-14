@@ -120,7 +120,7 @@ class THNetworkRequester {
         dynamic data,
         Options? options
       }) async {
-    THResponse<T> thResponse = THResponse.systemError();
+    THResponse<T> thResponse = THResponse.somethingWentWrong();
     switch(method) {
       case THRequestMethods.get:
         thResponse = await _request!.get(path, queryParameters: queryParameters, options: options);
@@ -152,7 +152,7 @@ class THNetworkRequester {
     }
     catch(exception) {
       THLogger().e(exception.toString());
-      return THResponse.systemError(message: exception.toString());
+      return THResponse.somethingWentWrong();
     }
   }
 

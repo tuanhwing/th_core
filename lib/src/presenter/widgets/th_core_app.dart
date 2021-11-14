@@ -1,5 +1,4 @@
 
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:th_core/th_core.dart';
 
@@ -87,6 +86,11 @@ class THCoreApp extends StatefulWidget {
   static Future<void> ensureInitialized({@required String? baseURL}) async {
     await EasyLocalization.ensureInitialized();
     await THInjector.initializeWith(baseURL: baseURL);
+
+    //Localize message
+    tr(THErrorMessageKey.unknown);
+    tr(THErrorMessageKey.networkError);
+    tr(THErrorMessageKey.somethingWentWrong);
   }
 }
 
@@ -97,7 +101,7 @@ class _THCoreState extends State<THCoreApp> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
+      providers: <BlocProvider<dynamic>>[
         BlocProvider<THConnectivityCubit>.value(
           value: GetIt.I.get<THConnectivityCubit>(),
         ),
