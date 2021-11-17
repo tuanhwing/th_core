@@ -17,7 +17,8 @@ class THNetworkRequester {
   // THNetworkRequester._internal();
 
   late THRequest? _request;
-  String? _refreshTokenPath;
+  late String _refreshTokenPath;
+  late String _authorizationPrefix;
   final Dio _tokenDio = Dio();
   final Dio _dio = Dio();
   final List<THNetworkListener> _listeners = [];
@@ -32,8 +33,10 @@ class THNetworkRequester {
   THNetworkRequester(String baseURL, this.storage, {
     int connectTimeout=5000,
     int receiveTimeout=3000,
-    String refreshTokenPath="/refresh_token"}) {
+    required String authorizationPrefix,
+    required String refreshTokenPath}) {
     _refreshTokenPath = refreshTokenPath;
+    _authorizationPrefix = authorizationPrefix;
 
     //Options
     _dio.options.baseUrl = baseURL;
@@ -47,7 +50,7 @@ class THNetworkRequester {
 
     _tokenDio.interceptors.add(InterceptorsWrapper(
         onRequest: (options, handler) {
-          options.headers['Authorization'] = "Bearer $_refreshToken";
+          options.headers['Authorization'] = "$_authorizationPrefix $_refreshToken";
           return handler.next(options);
         },
         onResponse: (response, handler) {
@@ -75,7 +78,7 @@ class THNetworkRequester {
     //Instance to request network.
     _dio.interceptors.add(InterceptorsWrapper(
         onRequest: (options, handler) {
-          options.headers['Authorization'] = "Bearer $_token";
+          options.headers['Authorization'] = "$_authorizationPrefix $_token";
           return handler.next(options);
         },
         onResponse: (response, handler) {
@@ -144,7 +147,7 @@ class THNetworkRequester {
 
   Future<THResponse<T>> _fetchNewToken<T>() async {
     try {
-      final response = await _tokenDio.get(_refreshTokenPath!);
+      final response = await _tokenDio.get(_refreshTokenPath);
       return THResponse<T>.fromJson(response);
     }
     on DioError catch (error) {

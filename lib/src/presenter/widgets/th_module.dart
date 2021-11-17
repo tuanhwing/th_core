@@ -1,18 +1,17 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:th_dependencies/th_dependencies.dart';
 import 'package:th_logger/th_logger.dart';
 
-import '../../th_back_platform_observer.dart';
 
 ///abstract [THModule] class used to building your module Widget
 abstract class THModule extends StatelessWidget {
   ///Constructor
   THModule({Key? key}) : super(key: key);
 
-  final THBackPlatformObserver _backPlatformObserver = GetIt.I
-      .get<THBackPlatformObserver>();
+  final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
   ///The name of the first route to show.
   String get initialRoute;
@@ -39,7 +38,13 @@ abstract class THModule extends StatelessWidget {
   }
 
   Future<bool> _onWillPop(BuildContext context) async {
-    _backPlatformObserver.notify();
+    if (_navigatorKey.currentState!.canPop()) {
+      _navigatorKey.currentState!.pop();
+    }
+    else {
+      SystemNavigator.pop();
+    }
+
     return false;
   }
 
@@ -49,6 +54,7 @@ abstract class THModule extends StatelessWidget {
     return WillPopScope(
         onWillPop: () => _onWillPop(context),
         child: Navigator(
+          key: _navigatorKey,
           initialRoute: initialRoute,
           onGenerateRoute: generateRoutes,
         ),

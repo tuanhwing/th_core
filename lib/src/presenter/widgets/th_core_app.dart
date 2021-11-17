@@ -83,9 +83,17 @@ class THCoreApp extends StatefulWidget {
   /// so that inject all dependencies
   ///
   /// [baseURL] param is server's url
-  static Future<void> ensureInitialized({@required String? baseURL}) async {
+  static Future<void> ensureInitialized({
+    required String baseURL,
+    String? refreshTokenPath,
+    String? authorizationPrefix,
+  }) async {
     await EasyLocalization.ensureInitialized();
-    await THInjector.initializeWith(baseURL: baseURL);
+    await THInjector.initializeWith(
+      baseURL: baseURL,
+      refreshTokenPath: refreshTokenPath,
+      authorizationPrefix: authorizationPrefix,
+    );
 
     //Localize message
     tr(THErrorMessageKey.unknown);
