@@ -94,8 +94,9 @@ abstract class THState<FWidget extends StatefulWidget, Bloc extends THBaseBloc>
       );
     }
 
-    final double height =
-        screenSize != null ? screenSize!.height : THDimens.size300;
+    final double width =
+        screenSize != null ? screenSize!.width*THDimens.size08
+            : THDimens.size300;
 
     return ColoredBox(
       color: themeData.primaryColorDark.withOpacity(0.1),
@@ -107,7 +108,7 @@ abstract class THState<FWidget extends StatefulWidget, Bloc extends THBaseBloc>
               Radius.circular(THDimens.size16),
             ),
             child: Container(
-              width: height,
+              width: width,
               color: themeData.scaffoldBackgroundColor,
               constraints: const BoxConstraints(maxWidth: THDimens.size300),
               child: Column(
