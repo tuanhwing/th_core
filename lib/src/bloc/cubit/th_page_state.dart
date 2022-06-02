@@ -1,4 +1,3 @@
-
 import 'package:th_core/th_core.dart';
 
 ///abstract [THPageState] used to build loading/error/init state
@@ -26,6 +25,7 @@ class THFetchFailureState extends THPageState {
 
   ///Message
   final String? errorMessage;
+
   ///Title button
   final String? titleButton;
 
@@ -36,7 +36,11 @@ class THFetchFailureState extends THPageState {
 /// [THShowErrorOverlayState] represents error state
 class THShowErrorOverlayState extends THPageState {
   ///Constructor
-  const THShowErrorOverlayState(this.message) : super();
+  const THShowErrorOverlayState({required this.title, required this.message})
+      : super();
+
+  ///Title
+  final String title;
 
   ///Message
   final String message;

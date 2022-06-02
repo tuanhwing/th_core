@@ -101,7 +101,7 @@ abstract class THState<FWidget extends StatefulWidget, FBloc extends THBaseBloc>
     } else if (state is THShowErrorOverlayState) {
       _overlayHandler.showError(
         context,
-        errorWidget: errorWidget(state.message, ),
+        errorWidget: errorWidget(state.message, title: state.title),
       );
     }
   }

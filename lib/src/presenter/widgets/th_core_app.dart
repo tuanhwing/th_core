@@ -94,11 +94,6 @@ class THCoreApp extends StatefulWidget {
       refreshTokenPath: refreshTokenPath,
       authorizationPrefix: authorizationPrefix,
     );
-
-    //Localize message
-    tr(THErrorMessageKey.unknown);
-    tr(THErrorMessageKey.networkError);
-    tr(THErrorMessageKey.somethingWentWrong);
   }
 }
 
