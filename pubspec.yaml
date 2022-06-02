@@ -15,13 +15,13 @@ dependencies:
   flutter_bloc: 7.3.1
 
   th_dependencies:
-    path: ./th_dependencies
+    git: https://github.com/tuanhwing/th_dependencies.git
 
   th_logger:
-    path: ./th_logger
+    git: https://github.com/tuanhwing/th_logger.git
 
   th_network:
-    path: ./th_network
+    git: https://github.com/tuanhwing/th_network.git
 
 dev_dependencies:
   flutter_test:
