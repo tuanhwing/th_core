@@ -1,12 +1,12 @@
 # TH CORE
 
-Flutter core package to explore the `BLOC pattern`, network, localization, ....
+Flutter core package to explore the `BLOC architecture`, network, localization, ....
 
 ## Getting Started
 
 This project is a starting point for a Flutter application.
 
-- Use `flutter_bloc` packages to implement BLoC pattern.
+- Use `flutter_bloc` packages to implement BLoC architecture.
 - Easy translations for many languages with `easy_localization` package.
 - Use overlay to show loading/error.
 - Networking with `dio` package.

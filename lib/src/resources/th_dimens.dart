@@ -5,8 +5,6 @@ class THDimens {
   static const double size05 = 0.5;
   ///0.7
   static const double size07 = 0.7;
-  ///0.7
-  static const double size08 = 0.8;
   ///1.0
   static const double size1 = 1.0;
   ///2.0
@@ -17,6 +15,8 @@ class THDimens {
   static const double size8 = 8.0;
   ///16.0
   static const double size16 = 16.0;
+  ///24.0
+  static const double size24 = 24.0;
   ///32.0
   static const double size32= 32.0;
   ///64.0
