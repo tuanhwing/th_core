@@ -36,11 +36,11 @@ class THFetchFailureState extends THPageState {
 /// [THShowErrorOverlayState] represents error state
 class THShowErrorOverlayState extends THPageState {
   ///Constructor
-  const THShowErrorOverlayState({required this.title, required this.message})
+  const THShowErrorOverlayState({this.title, required this.message})
       : super();
 
   ///Title
-  final String title;
+  final String? title;
 
   ///Message
   final String message;
