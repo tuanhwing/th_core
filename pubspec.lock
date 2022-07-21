@@ -406,7 +406,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "9aec84a8fd0819fe4bd42c19f501a5a003a17fdd"
+      resolved-ref: "6d821b9028e57a962cc3e00021d993b85769ee5b"
       url: "https://github.com/tuanhwing/th_network.git"
     source: git
     version: "0.0.1"
