@@ -14,7 +14,6 @@ class THInjector {
   /// [baseURL] server's base URL
   static Future<void> initializeWith({
     required String baseURL,
-    String? refreshTokenPath,
     String? authorizationPrefix,
   }) async {
     //Common
@@ -30,7 +29,6 @@ class THInjector {
     final THNetworkRequester requester = await THNetwork.getInstance(
       baseURL,
       _injector.get(),
-      refreshTokenPath: refreshTokenPath,
       authorizationPrefix: authorizationPrefix,
     );
     _injector.registerLazySingleton<THNetworkRequester>(() => requester);

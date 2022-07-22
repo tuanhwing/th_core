@@ -91,7 +91,6 @@ class THCoreApp extends StatefulWidget {
     await EasyLocalization.ensureInitialized();
     await THInjector.initializeWith(
       baseURL: baseURL,
-      refreshTokenPath: refreshTokenPath,
       authorizationPrefix: authorizationPrefix,
     );
   }
