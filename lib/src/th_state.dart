@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-import '../th_core.dart';
-import 'bloc/blocs.dart';
-import 'presenter/widgets/widgets.dart';
-import 'resources/th_dimens.dart';
+import 'package:th_core/th_core.dart';
 
 ///abstract [THState] class used to building your StatefulWidget(Page)
-abstract class THState<FWidget extends StatefulWidget, FBloc extends THBaseBloc>
-    extends State<FWidget>
+abstract class THState<FWidget extends StatefulWidget,
+        FBloc extends THBaseBloc<dynamic, dynamic>> extends State<FWidget>
     with WidgetsBindingObserver {
 
   late THOverlayHandler _overlayHandler;
@@ -45,15 +42,13 @@ abstract class THState<FWidget extends StatefulWidget, FBloc extends THBaseBloc>
   Widget get inProgressWidget => const InProgressWidget();
 
   ///Failure widget when [THFetchFailureState] called
-  Widget get failureWidget =>
-      Center(
-        child: CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(themeData.primaryColor),
-        ),
-      );
+  Widget get failureWidget => FailureWidget(onRetry: onRetry,);
 
   ///Loading widget when [THShowLoadingOverlayState] called
   Widget get loadingWidget => const LoadingWidget();
+
+  ///Background color
+  Color? get backgroundColor => null;
 
   ///Error widget when [THShowErrorOverlayState] called
   Widget errorWidget(String message,
@@ -70,40 +65,49 @@ abstract class THState<FWidget extends StatefulWidget, FBloc extends THBaseBloc>
     );
   }
 
-  bool _buildWhen(THPageState previous, THPageState current) {
-    if (previous is THInitialState) {
-      return current is THFetchInProgressState ||
-          current is THFetchFailureState ||
-          current is THFetchSuccessState;
+  bool _buildWhen(
+      THWidgetState<dynamic> previous, THWidgetState<dynamic> current,) {
+    if (previous is WidgetInitial) {
+      return current is WidgetLoading ||
+          current is WidgetError ||
+          current is WidgetLoaded;
     }
-    if (previous is THFetchInProgressState) {
-      return current is THFetchFailureState ||
-          current is THFetchSuccessState;
+    if (previous is WidgetLoading) {
+      return current is WidgetError ||
+          current is WidgetLoaded;
     }
-    if (previous is THFetchFailureState) {
-      return current is THFetchInProgressState ||
-          current is THFetchSuccessState;
+    if (previous is WidgetError) {
+      return current is WidgetLoading ||
+          current is WidgetLoaded;
     }
-    if (previous is THFetchSuccessState) {
-      return current is THFetchFailureState ||
-          current is THFetchInProgressState;
+    if (previous is WidgetLoaded) {
+      return current is WidgetError ||
+          current is WidgetLoading;
     }
     return false;
   }
 
   ///Called when cubit's state changed
   @mustCallSuper
-  void onPageStateChanged(THPageState state) {
-    if (state is THInitialState) {
+  void onPageStateChanged(THWidgetState<dynamic> state) {
+    THLogger().d('$runtimeType.onPageStateChanged: $state');
+    if (state is WidgetInitial) {
       _overlayHandler.hide();
-    } else if (state is THShowLoadingOverlayState) {
+    } else if (state is WidgetShowLoadingOverlay) {
       _overlayHandler.showLoading(context, loadingWidget: loadingWidget);
-    } else if (state is THShowErrorOverlayState) {
+    } else if (state is WidgetShowErrorNotifyOverlay &&
+        state.data is NotifyEntity) {
+      final NotifyEntity entity = state.data as NotifyEntity;
       _overlayHandler.showError(
         context,
-        errorWidget: errorWidget(state.message, title: state.title),
+        errorWidget: errorWidget(entity.message, title: entity.title),
       );
     }
+  }
+
+  ///Handle event user tap outside
+  void handleOutsideTap() {
+    FocusScope.of(context).requestFocus(FocusNode());
   }
 
   ///Handle retry function when state is [THFetchFailureState]
@@ -130,63 +134,56 @@ abstract class THState<FWidget extends StatefulWidget, FBloc extends THBaseBloc>
   @mustCallSuper
   void initState() {
     super.initState();
+    THLogger().d('$runtimeType.initState');
 
     // Initialize
     _bloc = GetIt.I.get<FBloc>();
     _overlayHandler = GetIt.I.get<THOverlayHandler>();
 
     // Add the observer
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
-    SchedulerBinding.instance!.addPostFrameCallback((Duration duration) {
+    SchedulerBinding.instance.addPostFrameCallback((Duration duration) {
       onPostFrame();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    THLogger().d('$runtimeType.build');
     return MultiBlocProvider(
-      // ignore_for_file: always_specify_types
-      providers: [
+      providers: <BlocProvider<dynamic>>[
         BlocProvider<FBloc>.value(value: _bloc),
-        BlocProvider<THPageCubit>.value(value: _bloc.pageCubit),
+        BlocProvider<THWidgetCubit>.value(value: _bloc.pageCubit),
       ],
-      child: Builder(
-        builder: (BuildContext context) {
-          return GestureDetector(
-            onTap: () {
-              FocusScope.of(context).requestFocus(FocusNode());
+      child: GestureDetector(
+        onTap: handleOutsideTap,
+        child: Scaffold(
+          backgroundColor: backgroundColor,
+          appBar: appBar,
+          resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+          body: BlocConsumer<THWidgetCubit, THWidgetState<dynamic>>(
+            listener: (BuildContext context, THWidgetState<dynamic> state) {
+              onPageStateChanged(state);
             },
-            child: Scaffold(
-              appBar: appBar,
-              resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-              body: BlocConsumer<THPageCubit, THPageState>(
-                  listener: (BuildContext context, THPageState state) {
-                    onPageStateChanged(state);
-                  },
-                  buildWhen: (THPageState previous, THPageState current) {
-                    return _buildWhen(previous, current);
-                  },
-                  builder: (BuildContext context, THPageState state) {
-                    THLogger().d('$runtimeType build $state');
-                    if (state is THFetchInProgressState) {
-                      return inProgressWidget;
-                    }
-                    if (state is THFetchFailureState) {
-                    return FailureWidget(
-                      errorMessage: state.errorMessage,
-                      titleButton: state.titleButton,
-                      onRetry: onRetry,
-                    );
-                  }
-                    return content;
-                  },
-              ),
-              floatingActionButton: floatingActionButton,
-              bottomNavigationBar: bottomNavigationBar,
-            ),
-          );
-        },
+            buildWhen: (THWidgetState<dynamic> previous,
+                THWidgetState<dynamic> current,) {
+              return _buildWhen(previous, current);
+            },
+            builder: (BuildContext context, THWidgetState<dynamic> state) {
+              THLogger().d('$runtimeType.build $state');
+              if (state is WidgetLoading) {
+                return inProgressWidget;
+              }
+              if (state is WidgetError) {
+                return failureWidget;
+              }
+              return content;
+            },
+          ),
+          floatingActionButton: floatingActionButton,
+          bottomNavigationBar: bottomNavigationBar,
+        ),
       ),
     );
   }
@@ -195,8 +192,8 @@ abstract class THState<FWidget extends StatefulWidget, FBloc extends THBaseBloc>
   @mustCallSuper
   void dispose() {
     // Remove the observer
-    WidgetsBinding.instance!.removeObserver(this);
-    bloc.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    bloc.close();
 
     super.dispose();
   }

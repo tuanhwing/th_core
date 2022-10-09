@@ -1,8 +1,8 @@
 
 import 'package:flutter/cupertino.dart';
+import 'package:th_core/src/di/th_injector.dart';
 import 'package:th_core/th_core.dart';
 
-import '../../di/th_injector.dart';
 
 /// [THCoreApp] class responsible for starting the Modular engine
 class THCoreApp extends StatefulWidget {
@@ -85,13 +85,14 @@ class THCoreApp extends StatefulWidget {
   /// [baseURL] param is server's url
   static Future<void> ensureInitialized({
     required String baseURL,
-    String? refreshTokenPath,
+    required String refreshTokenPath,
     String? authorizationPrefix,
   }) async {
     await EasyLocalization.ensureInitialized();
     await THInjector.initializeWith(
       baseURL: baseURL,
       authorizationPrefix: authorizationPrefix,
+      refreshTokenPath: refreshTokenPath,
     );
   }
 }

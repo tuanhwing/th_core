@@ -1,8 +1,7 @@
 
 import 'package:flutter/material.dart';
-
-import '../../../th_core.dart';
-import '../../resources/th_dimens.dart';
+import 'package:th_core/src/resources/th_dimens.dart';
+import 'package:th_core/th_core.dart';
 
 ///Error Popup widget
 class ErrorPopUpOverlayWidget extends StatelessWidget {

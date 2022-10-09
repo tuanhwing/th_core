@@ -1,9 +1,5 @@
 
-import 'package:th_dependencies/th_dependencies.dart';
-import 'package:th_network/th_network.dart';
-
-import '../bloc/blocs.dart';
-import '../presenter/widgets/th_overlay_handler.dart';
+import 'package:th_core/th_core.dart';
 
 /// [THInjector] class responsible for injecting all core's dependencies
 class THInjector {
@@ -14,6 +10,7 @@ class THInjector {
   /// [baseURL] server's base URL
   static Future<void> initializeWith({
     required String baseURL,
+    required String refreshTokenPath,
     String? authorizationPrefix,
   }) async {
     //Common
@@ -23,13 +20,14 @@ class THInjector {
     );
     _injector.registerLazySingleton<SharedPreferences>(() => _prefs);
 
-    _injector.registerFactory<THPageCubit>(() => THPageCubit());
+    _injector.registerFactory<THWidgetCubit>(() => THWidgetCubit());
 
     //Network requester
     final THNetworkRequester requester = await THNetwork.getInstance(
       baseURL,
       _injector.get(),
       authorizationPrefix: authorizationPrefix,
+      refreshTokenPath: refreshTokenPath,
     );
     _injector.registerLazySingleton<THNetworkRequester>(() => requester);
 
