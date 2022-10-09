@@ -448,7 +448,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "8f796a3cc1c2653d55d80f669632c0eae1778d78"
+      resolved-ref: "7f248570fa733e236864c9c9f02e3b122878b21f"
       url: "https://github.com/tuanhwing/th_network.git"
     source: git
     version: "0.0.1"
