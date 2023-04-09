@@ -11,6 +11,8 @@ class THDimens {
   static const double size2 = 2.0;
   ///3.0
   static const double size3 = 3.0;
+  ///4.0
+  static const double size4 = 4.0;
   ///8.0
   static const double size8 = 8.0;
   ///16.0

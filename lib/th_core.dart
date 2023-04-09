@@ -9,4 +9,5 @@ export 'src/bloc/blocs.dart';
 export 'src/entities/entities.dart';
 export 'src/extensions/extensions.dart';
 export 'src/presenter/presenter.dart';
+export 'src/resources/th_dimens.dart';
 export 'src/th_state.dart';

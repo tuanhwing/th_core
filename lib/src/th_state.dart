@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
@@ -6,7 +7,7 @@ import 'package:th_core/th_core.dart';
 ///abstract [THState] class used to building your StatefulWidget(Page)
 abstract class THState<FWidget extends StatefulWidget,
         FBloc extends THBaseBloc<dynamic, dynamic>> extends State<FWidget>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver,AutomaticKeepAliveClientMixin<FWidget> {
 
   late THOverlayHandler _overlayHandler;
 
@@ -38,6 +39,9 @@ abstract class THState<FWidget extends StatefulWidget,
   ///themselves to avoid the onscreen keyboard whose height is defined
   bool get resizeToAvoidBottomInset => true;
 
+  ///extendBody
+  bool get extendBody => false;
+
   ///In progress widget when [THFetchInProgressState] called
   Widget get inProgressWidget => const InProgressWidget();
 
@@ -49,6 +53,52 @@ abstract class THState<FWidget extends StatefulWidget,
 
   ///Background color
   Color? get backgroundColor => null;
+
+  ///Responsible for determining where the [floatingActionButton] should go.
+  FloatingActionButtonLocation? get floatingActionButtonLocation => null;
+
+  ///Dismiss the on screen keyboard
+  void dismissKeyboard() {
+    FocusScope.of(context).unfocus();
+  }
+
+  ///Show notify popup
+  void showNotifyPopup({
+    Widget? title,
+    required Widget content,
+    String? positive,
+    String? negative,
+    VoidCallback? onPositiveTap,
+    VoidCallback? onNegativeTap,
+    bool useRootNavigator = false,
+    bool barrierDismissible = true,
+  }) {
+    final List<CupertinoDialogAction> _actions = <CupertinoDialogAction>[];
+    if (negative != null) {
+      _actions.add(CupertinoDialogAction(
+        onPressed: onNegativeTap,
+        child: Text(negative),
+      ),);
+    }
+
+    if (positive != null) {
+      _actions.add(CupertinoDialogAction(
+        onPressed: onPositiveTap,
+        child: Text(positive),
+      ),);
+    }
+
+    showCupertinoModalPopup<void>(
+      context: context,
+      useRootNavigator: useRootNavigator,
+      barrierDismissible: barrierDismissible,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: title,
+        content: content,
+        actions: _actions,
+      ),
+    );
+  }
 
   ///Error widget when [THShowErrorOverlayState] called
   Widget errorWidget(String message,
@@ -65,6 +115,7 @@ abstract class THState<FWidget extends StatefulWidget,
     );
   }
 
+  ///Detect rebuild when condition expected
   bool _buildWhen(
       THWidgetState<dynamic> previous, THWidgetState<dynamic> current,) {
     if (previous is WidgetInitial) {
@@ -131,6 +182,9 @@ abstract class THState<FWidget extends StatefulWidget,
   void onInactive() {}
 
   @override
+  bool get wantKeepAlive => false;
+
+  @override
   @mustCallSuper
   void initState() {
     super.initState();
@@ -151,6 +205,7 @@ abstract class THState<FWidget extends StatefulWidget,
   @override
   Widget build(BuildContext context) {
     THLogger().d('$runtimeType.build');
+    super.build(context);
     return MultiBlocProvider(
       providers: <BlocProvider<dynamic>>[
         BlocProvider<FBloc>.value(value: _bloc),
@@ -161,15 +216,13 @@ abstract class THState<FWidget extends StatefulWidget,
         child: Scaffold(
           backgroundColor: backgroundColor,
           appBar: appBar,
+          extendBody: extendBody,
           resizeToAvoidBottomInset: resizeToAvoidBottomInset,
           body: BlocConsumer<THWidgetCubit, THWidgetState<dynamic>>(
             listener: (BuildContext context, THWidgetState<dynamic> state) {
               onPageStateChanged(state);
             },
-            buildWhen: (THWidgetState<dynamic> previous,
-                THWidgetState<dynamic> current,) {
-              return _buildWhen(previous, current);
-            },
+            buildWhen: _buildWhen,
             builder: (BuildContext context, THWidgetState<dynamic> state) {
               THLogger().d('$runtimeType.build $state');
               if (state is WidgetLoading) {
@@ -181,6 +234,7 @@ abstract class THState<FWidget extends StatefulWidget,
               return content;
             },
           ),
+          floatingActionButtonLocation: floatingActionButtonLocation,
           floatingActionButton: floatingActionButton,
           bottomNavigationBar: bottomNavigationBar,
         ),
