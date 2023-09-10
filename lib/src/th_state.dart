@@ -181,6 +181,9 @@ abstract class THState<FWidget extends StatefulWidget,
   /// The application is in an inactive state and is not receiving user input.
   void onInactive() {}
 
+  ///All views of an application are hidden
+  void onHidden() {}
+
   @override
   bool get wantKeepAlive => false;
 
@@ -261,18 +264,19 @@ abstract class THState<FWidget extends StatefulWidget,
       case AppLifecycleState.resumed:
         // widget is resumed
         onResume();
-        break;
       case AppLifecycleState.inactive:
         // widget is inactive
         onInactive();
-        break;
       case AppLifecycleState.paused:
         // widget is paused
         onPause();
-        break;
       case AppLifecycleState.detached:
         // widget is detached
         onDetach();
+      case AppLifecycleState.hidden:
+        // all views is hidden
+        onHidden();
+      default:
         break;
     }
   }
