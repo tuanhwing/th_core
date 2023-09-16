@@ -158,7 +158,6 @@ abstract class THState<FWidget extends StatefulWidget,
 
   ///Handle event user tap outside
   void handleOutsideTap() {
-    FocusScope.of(context).requestFocus(FocusNode());
   }
 
   ///Handle retry function when state is [THFetchFailureState]
