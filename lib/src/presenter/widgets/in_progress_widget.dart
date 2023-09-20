@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 ///In-progress widget
 class InProgressWidget extends StatelessWidget {
   ///Constructor
-  const InProgressWidget({Key? key}) : super(key: key);
+  const InProgressWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

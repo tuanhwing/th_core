@@ -4,7 +4,7 @@ import 'package:th_core/th_core.dart';
 ///abstract [THBaseBloc] class used to building your bloc
 abstract class THBaseBloc<Event, State> extends Bloc<Event, State> {
   ///Constructor
-  THBaseBloc(State initialState) : super(initialState) {
+  THBaseBloc(super.initialState) {
     _pageCubit = GetIt.I.get<THWidgetCubit>();
   }
 

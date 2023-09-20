@@ -8,7 +8,7 @@ import 'package:th_core/th_core.dart';
 class THCoreApp extends StatefulWidget {
   ///Constructor
   THCoreApp({
-    Key? key,
+    super.key,
     required this.child,
     required this.supportedLocales,
     required this.path,
@@ -19,7 +19,7 @@ class THCoreApp extends StatefulWidget {
     this.assetLoader = const RootBundleAssetLoader(),
     this.saveLocale = true,
     this.errorWidget,
-  }) : super(key: key) {
+  }) {
     THLogger().d('start!');
   }
 

@@ -73,16 +73,16 @@ abstract class THState<FWidget extends StatefulWidget,
     bool useRootNavigator = false,
     bool barrierDismissible = true,
   }) {
-    final List<CupertinoDialogAction> _actions = <CupertinoDialogAction>[];
+    final List<CupertinoDialogAction> actions = <CupertinoDialogAction>[];
     if (negative != null) {
-      _actions.add(CupertinoDialogAction(
+      actions.add(CupertinoDialogAction(
         onPressed: onNegativeTap,
         child: Text(negative),
       ),);
     }
 
     if (positive != null) {
-      _actions.add(CupertinoDialogAction(
+      actions.add(CupertinoDialogAction(
         onPressed: onPositiveTap,
         child: Text(positive),
       ),);
@@ -95,7 +95,7 @@ abstract class THState<FWidget extends StatefulWidget,
       builder: (BuildContext context) => CupertinoAlertDialog(
         title: title,
         content: content,
-        actions: _actions,
+        actions: actions,
       ),
     );
   }

@@ -1,4 +1,3 @@
-library th_core;
 
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:th_dependencies/th_dependencies.dart';

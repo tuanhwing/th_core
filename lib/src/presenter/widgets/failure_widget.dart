@@ -8,8 +8,7 @@ import 'package:th_dependencies/th_dependencies.dart';
 class FailureWidget extends StatelessWidget {
   ///Constructor
   const FailureWidget(
-      {Key? key, this.errorMessage, this.titleButton, this.onRetry,})
-      : super(key: key);
+      {super.key, this.errorMessage, this.titleButton, this.onRetry,});
 
   ///Error message
   final String? errorMessage;
@@ -30,7 +29,7 @@ class FailureWidget extends StatelessWidget {
           padding: const EdgeInsets.all(THDimens.size24),
           child: Text(
             '${errorMessage ?? tr('something_went_wrong').inCaps} :(',
-            style: themeData.textTheme.headline6!
+            style: themeData.textTheme.titleLarge!
                 .apply(color: themeData.primaryColor),
             textAlign: TextAlign.center,
           ),
@@ -55,7 +54,7 @@ class FailureWidget extends StatelessWidget {
               ),
               child: Text(
                 titleButton ?? tr('retry').inCaps,
-                style: Theme.of(context).textTheme.subtitle1!.apply(
+                style: Theme.of(context).textTheme.titleMedium!.apply(
                   fontWeightDelta: 2,
                 ),
               ),

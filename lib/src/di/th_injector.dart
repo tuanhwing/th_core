@@ -14,11 +14,11 @@ class THInjector {
     String? authorizationPrefix,
   }) async {
     //Common
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     _injector.registerLazySingleton<FlutterSecureStorage>(
           () => const FlutterSecureStorage(),
     );
-    _injector.registerLazySingleton<SharedPreferences>(() => _prefs);
+    _injector.registerLazySingleton<SharedPreferences>(() => prefs);
 
     _injector.registerFactory<THWidgetCubit>(() => THWidgetCubit());
 
@@ -28,6 +28,7 @@ class THInjector {
       _injector.get(),
       authorizationPrefix: authorizationPrefix,
       refreshTokenPath: refreshTokenPath,
+      receiveTimeout: 10000,
     );
     _injector.registerLazySingleton<THNetworkRequester>(() => requester);
 

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 ///Loading widget
 class LoadingWidget extends StatelessWidget {
   ///Constructor
-  const LoadingWidget({Key? key}) : super(key: key);
+  const LoadingWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

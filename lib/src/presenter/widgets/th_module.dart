@@ -9,7 +9,7 @@ import 'package:th_logger/th_logger.dart';
 ///abstract [THModule] class used to building your module Widget
 abstract class THModule extends StatelessWidget {
   ///Constructor
-  THModule({Key? key}) : super(key: key);
+  THModule({super.key});
 
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
@@ -28,7 +28,7 @@ abstract class THModule extends StatelessWidget {
       page = GetIt.I.get(instanceName: routeSettings.name);
     }
     catch(exception) {
-      final String tag = '${runtimeType.toString()}.generateRoutes';
+      final String tag = '$runtimeType.generateRoutes';
       THLogger().e('$tag routeName:${routeSettings.name} exception:$exception');
     }
     return MaterialPageRoute<void>(
@@ -50,7 +50,7 @@ abstract class THModule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    THLogger().d('${runtimeType.toString()} build');
+    THLogger().d('$runtimeType build');
     return WillPopScope(
         onWillPop: () => _onWillPop(context),
         child: Navigator(

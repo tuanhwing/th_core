@@ -16,7 +16,7 @@ class THOverlayHandler {
     _loadingOverlay = OverlayEntry(
       builder: (BuildContext context) => loadingWidget,
     );
-    Overlay.of(context)!.insert(_loadingOverlay!);
+    Overlay.of(context).insert(_loadingOverlay!);
   }
 
   ///Show error overlay
@@ -26,7 +26,7 @@ class THOverlayHandler {
     _errorOverlay = OverlayEntry(
       builder: (BuildContext context) => errorWidget,
     );
-    Overlay.of(context)!.insert(_errorOverlay!);
+    Overlay.of(context).insert(_errorOverlay!);
   }
 
   ///Hide loading/error overlay

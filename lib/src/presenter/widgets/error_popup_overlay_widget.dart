@@ -6,13 +6,13 @@ import 'package:th_core/th_core.dart';
 class ErrorPopUpOverlayWidget extends StatelessWidget {
   ///Constructor
   const ErrorPopUpOverlayWidget({
-    Key? key,
+    super.key,
     required this.message,
     this.title,
     this.okString,
     required this.overlayHandler,
     this.onOK,
-  }) : super(key: key);
+  });
   ///Message
   final String? message;
   ///Title
@@ -41,7 +41,7 @@ class ErrorPopUpOverlayWidget extends StatelessWidget {
           title!,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: themeData.textTheme.subtitle1
+          style: themeData.textTheme.titleMedium
               ?.apply(fontSizeDelta: THDimens.size3),
         ),
       );
@@ -90,13 +90,13 @@ class ErrorPopUpOverlayWidget extends StatelessWidget {
                       alignment: Alignment.center,
                       child: Text(
                         okString ?? tr('ok').toUpperCase(),
-                        style: themeData.textTheme.subtitle1?.apply(
+                        style: themeData.textTheme.titleMedium?.apply(
                           color: themeData.primaryColor,
                           fontSizeDelta: THDimens.size1,
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
