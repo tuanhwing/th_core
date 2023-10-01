@@ -5,7 +5,7 @@ import 'package:th_core/th_core.dart';
 
 
 /// [THCoreApp] class responsible for starting the Modular engine
-class THCoreApp extends StatefulWidget {
+class THCoreApp extends StatelessWidget {
   ///Constructor
   THCoreApp({
     super.key,
@@ -77,7 +77,20 @@ class THCoreApp extends StatefulWidget {
   final Widget Function(FlutterError? message)? errorWidget;
 
   @override
-  State<StatefulWidget> createState() => _THCoreState();
+  Widget build(BuildContext context) {
+    return EasyLocalization(
+      supportedLocales: supportedLocales,
+      path: path,
+      fallbackLocale: fallbackLocale,
+      startLocale: startLocale,
+      useOnlyLangCode: useOnlyLangCode,
+      useFallbackTranslations: useFallbackTranslations,
+      assetLoader: assetLoader,
+      saveLocale: saveLocale,
+      errorWidget: errorWidget,
+      child: child,
+    );
+  }
 
   /// ensureInitialized needs to be called in main
   /// so that inject all dependencies
@@ -93,27 +106,6 @@ class THCoreApp extends StatefulWidget {
       baseURL: baseURL,
       authorizationPrefix: authorizationPrefix,
       refreshTokenPath: refreshTokenPath,
-    );
-  }
-}
-
-class _THCoreState extends State<THCoreApp> {
-
-
-
-  @override
-  Widget build(BuildContext context) {
-    return EasyLocalization(
-      supportedLocales: widget.supportedLocales,
-      path: widget.path,
-      fallbackLocale: widget.fallbackLocale,
-      startLocale: widget.startLocale,
-      useOnlyLangCode: widget.useOnlyLangCode,
-      useFallbackTranslations: widget.useFallbackTranslations,
-      assetLoader: widget.assetLoader,
-      saveLocale: widget.saveLocale,
-      errorWidget: widget.errorWidget,
-      child: widget.child,
     );
   }
 }
