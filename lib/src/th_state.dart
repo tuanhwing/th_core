@@ -11,6 +11,9 @@ abstract class THState<FWidget extends StatefulWidget,
 
   late THOverlayHandler _overlayHandler;
 
+  ///OverlayHandler manage show/hide loading/error
+  THOverlayHandler get overlayHandler => _overlayHandler;
+
   ///Bloc of current state
   late FBloc _bloc;
 
