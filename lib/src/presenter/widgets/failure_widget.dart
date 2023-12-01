@@ -8,18 +8,30 @@ class FailureWidget extends StatelessWidget {
   ///Constructor
   const FailureWidget({
     super.key,
+    this.imageWidth,
     this.title,
+    this.titleStyle,
     this.description,
+    this.descriptionStyle,
     this.titleButton,
     this.onRetry,
     this.padding,
   });
 
+  ///Image width
+  final double? imageWidth;
+
   ///Title
   final String? title;
 
+  ///Title style
+  final TextStyle? titleStyle;
+
   ///Message
   final String? description;
+
+  ///Description style
+  final TextStyle? descriptionStyle;
 
   ///Title button
   final String? titleButton;
@@ -34,16 +46,23 @@ class FailureWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     final String descriptionStr = description ?? '';
+    final double leftImagePadding =
+        imageWidth != null ? (imageWidth! / THDimens.size8) : THDimens.size32;
 
     return Padding(
       padding: padding ?? const EdgeInsets.all(THDimens.size16),
       child: Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(left: THDimens.size32),
+            padding: EdgeInsets.only(
+              left: leftImagePadding > THDimens.size32
+                  ? THDimens.size32
+                  : leftImagePadding,
+            ),
             child: Image.asset(
               'assets/images/error.png',
               package: 'th_core',
+              width: imageWidth,
             ),
           ),
           Container(
@@ -53,16 +72,18 @@ class FailureWidget extends StatelessWidget {
               children: <Widget>[
                 Text(
                   '${title ?? tr('something_went_wrong').allInCaps}!',
-                  style: themeData.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: titleStyle ??
+                      themeData.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                   textAlign: TextAlign.center,
                 ),
                 if (descriptionStr.isNotEmpty)
                   Text(
                     descriptionStr.inCaps,
-                    style: themeData.textTheme.bodyLarge
-                        ?.copyWith(color: themeData.hintColor),
+                    style: descriptionStyle ??
+                        themeData.textTheme.bodyMedium
+                            ?.copyWith(color: themeData.hintColor),
                   )
                 else
                   const SizedBox(),
