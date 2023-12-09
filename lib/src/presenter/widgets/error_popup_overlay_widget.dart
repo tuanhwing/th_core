@@ -41,6 +41,7 @@ class ErrorPopUpOverlayWidget extends StatelessWidget {
           title!,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
           style: themeData.textTheme.titleMedium
               ?.apply(fontSizeDelta: THDimens.size3),
         ),
@@ -71,7 +72,10 @@ class ErrorPopUpOverlayWidget extends StatelessWidget {
                       vertical: THDimens.size16,
                       horizontal: THDimens.size32,
                     ),
-                    child: Text(message ?? ''),
+                    child: Text(
+                      message ?? '',
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                   Divider(
                     height: THDimens.size1,
