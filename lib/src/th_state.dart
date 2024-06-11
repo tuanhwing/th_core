@@ -210,7 +210,8 @@ abstract class THState<FWidget extends StatefulWidget,
   @override
   Widget build(BuildContext context) {
     THLogger().d('$runtimeType.build');
-    super.build(context);
+    if (wantKeepAlive) super.build(context);
+
     return MultiBlocProvider(
       providers: <BlocProvider<dynamic>>[
         BlocProvider<FBloc>.value(value: _bloc),
