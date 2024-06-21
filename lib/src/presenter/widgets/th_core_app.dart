@@ -99,6 +99,7 @@ class THCoreApp extends StatelessWidget {
   static Future<void> ensureInitialized({
     required String baseURL,
     required String refreshTokenPath,
+    required String logoutPath,
     String? authorizationPrefix,
   }) async {
     await EasyLocalization.ensureInitialized();
@@ -106,6 +107,7 @@ class THCoreApp extends StatelessWidget {
       baseURL: baseURL,
       authorizationPrefix: authorizationPrefix,
       refreshTokenPath: refreshTokenPath,
+      logoutPath: logoutPath,
     );
   }
 }
