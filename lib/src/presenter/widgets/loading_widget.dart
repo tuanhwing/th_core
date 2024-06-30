@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
 
+import '../../resources/th_dimens.dart';
+
 ///Loading widget
 class LoadingWidget extends StatelessWidget {
   ///Constructor
@@ -13,6 +15,7 @@ class LoadingWidget extends StatelessWidget {
       color: themeData.primaryColorDark.withOpacity(0.1),
       child: Center(
         child: CircularProgressIndicator(
+          strokeWidth: THDimens.size2,
           valueColor: AlwaysStoppedAnimation<Color>(themeData.primaryColor),
         ),
       ),
