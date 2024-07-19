@@ -24,7 +24,7 @@ abstract class THState<FWidget extends StatefulWidget,
   ThemeData get themeData => Theme.of(context);
 
   ///Get screen size
-  Size? get screenSize => MediaQuery.of(context).size;
+  Size get screenSize => MediaQuery.of(context).size;
 
   ///Content of page
   Widget get content;
