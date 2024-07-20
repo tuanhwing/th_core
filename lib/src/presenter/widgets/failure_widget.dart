@@ -16,6 +16,7 @@ class FailureWidget extends StatelessWidget {
     this.titleButton,
     this.onRetry,
     this.padding,
+    this.buttonStyle,
   });
 
   ///Image width
@@ -35,6 +36,9 @@ class FailureWidget extends StatelessWidget {
 
   ///Title button
   final String? titleButton;
+
+  ///Button style
+  final TextStyle? buttonStyle;
 
   ///Retry callback
   final VoidCallback? onRetry;
@@ -108,7 +112,7 @@ class FailureWidget extends StatelessWidget {
               ),
               child: Text(
                 titleButton ?? tr('retry').inCaps,
-                style: const TextStyle(fontSize: THDimens.size16),
+                style: buttonStyle ?? themeData.textTheme.titleMedium,
               ),
             )
           else
