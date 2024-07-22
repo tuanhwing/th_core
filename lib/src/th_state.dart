@@ -45,6 +45,9 @@ abstract class THState<FWidget extends StatefulWidget,
   ///extendBody
   bool get extendBody => false;
 
+  ///extendBodyBehindAppBar
+  bool get extendBodyBehindAppBar => false;
+
   ///In progress widget when [THFetchInProgressState] called
   Widget get inProgressWidget => const InProgressWidget();
 
@@ -223,6 +226,7 @@ abstract class THState<FWidget extends StatefulWidget,
           backgroundColor: backgroundColor,
           appBar: appBar,
           extendBody: extendBody,
+          extendBodyBehindAppBar: extendBodyBehindAppBar,
           resizeToAvoidBottomInset: resizeToAvoidBottomInset,
           body: BlocConsumer<THWidgetCubit, THWidgetState<dynamic>>(
             listener: (BuildContext context, THWidgetState<dynamic> state) {
