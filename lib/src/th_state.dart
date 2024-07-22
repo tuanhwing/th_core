@@ -30,7 +30,7 @@ abstract class THState<FWidget extends StatefulWidget,
   Widget get content;
 
   ///AppBar of page
-  AppBar? get appBar => null;
+  PreferredSizeWidget? get appBar => null;
 
   ///Floating widget of page
   Widget? get floatingActionButton => null;
