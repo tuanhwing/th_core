@@ -9,6 +9,9 @@ class THOverlayHandler {
   OverlayEntry? _loadingOverlay;
   OverlayEntry? _errorOverlay;
 
+  ///Whether error or loading overlay is showing or not
+  bool get isShowing => _errorOverlay != null || _loadingOverlay != null;
+
   ///Show loading overlay
   void showLoading(BuildContext context, {required Widget loadingWidget}) {
     hide();

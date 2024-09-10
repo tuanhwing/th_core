@@ -215,20 +215,20 @@ abstract class THState<FWidget extends StatefulWidget,
     THLogger().d('$runtimeType.build');
     if (wantKeepAlive) super.build(context);
 
-    return MultiBlocProvider(
-      providers: <BlocProvider<dynamic>>[
-        BlocProvider<FBloc>.value(value: _bloc),
-        BlocProvider<THWidgetCubit>.value(value: _bloc.pageCubit),
-      ],
-      child: GestureDetector(
-        onTap: handleOutsideTap,
-        child: Scaffold(
-          backgroundColor: backgroundColor,
-          appBar: appBar,
-          extendBody: extendBody,
-          extendBodyBehindAppBar: extendBodyBehindAppBar,
-          resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-          body: BlocConsumer<THWidgetCubit, THWidgetState<dynamic>>(
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      appBar: appBar,
+      extendBody: extendBody,
+      extendBodyBehindAppBar: extendBodyBehindAppBar,
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+      body: MultiBlocProvider(
+        providers: <BlocProvider<dynamic>>[
+          BlocProvider<FBloc>.value(value: _bloc),
+          BlocProvider<THWidgetCubit>.value(value: _bloc.pageCubit),
+        ],
+        child: GestureDetector(
+          onTap: handleOutsideTap,
+          child: BlocConsumer<THWidgetCubit, THWidgetState<dynamic>>(
             listener: (BuildContext context, THWidgetState<dynamic> state) {
               onPageStateChanged(state);
             },
@@ -244,11 +244,11 @@ abstract class THState<FWidget extends StatefulWidget,
               return content;
             },
           ),
-          floatingActionButtonLocation: floatingActionButtonLocation,
-          floatingActionButton: floatingActionButton,
-          bottomNavigationBar: bottomNavigationBar,
         ),
       ),
+      floatingActionButtonLocation: floatingActionButtonLocation,
+      floatingActionButton: floatingActionButton,
+      bottomNavigationBar: bottomNavigationBar,
     );
   }
 

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:th_core/th_core.dart';
 import 'package:th_dependencies/th_dependencies.dart';
 import 'package:th_logger/th_logger.dart';
 
@@ -19,8 +20,8 @@ abstract class THModule extends StatelessWidget {
   ///Called to generate a route for a given [RouteSettings].
   Route<dynamic>? generateRoutes(RouteSettings routeSettings) {
     Widget page = Scaffold(
-      body: Center(
-        child: Text(tr('not_found')),
+      body: FailureWidget(
+        title: tr('not_found').inCaps,
       ),
     );
 
@@ -38,11 +39,14 @@ abstract class THModule extends StatelessWidget {
   }
 
   Future<bool> _onWillPop(BuildContext context) async {
-    if (_navigatorKey.currentState!.canPop()) {
-      _navigatorKey.currentState!.pop();
-    }
-    else {
-      SystemNavigator.pop();
+    final THOverlayHandler overlayHandler = GetIt.I.get<THOverlayHandler>();
+    if (!overlayHandler.isShowing) {
+      if (_navigatorKey.currentState!.canPop()) {
+        _navigatorKey.currentState!.pop();
+      }
+      else {
+        SystemNavigator.pop();
+      }
     }
 
     return false;
