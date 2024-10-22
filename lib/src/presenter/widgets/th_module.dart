@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:th_core/th_core.dart';
-import 'package:th_dependencies/th_dependencies.dart';
-import 'package:th_logger/th_logger.dart';
 
 
 ///abstract [THModule] class used to building your module Widget
@@ -38,7 +36,7 @@ abstract class THModule extends StatelessWidget {
     );
   }
 
-  Future<bool> _onWillPop(BuildContext context) async {
+  Future<bool> _onWillPop<T>(bool didPop, T? result) async {
     final THOverlayHandler overlayHandler = GetIt.I.get<THOverlayHandler>();
     if (!overlayHandler.isShowing) {
       if (_navigatorKey.currentState!.canPop()) {
@@ -55,8 +53,9 @@ abstract class THModule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     THLogger().d('$runtimeType build');
-    return WillPopScope(
-        onWillPop: () => _onWillPop(context),
+    return PopScope(
+        canPop: false,
+        onPopInvokedWithResult: _onWillPop,
         child: Navigator(
           key: _navigatorKey,
           initialRoute: initialRoute,

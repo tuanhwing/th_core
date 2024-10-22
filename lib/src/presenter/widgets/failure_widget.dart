@@ -98,12 +98,12 @@ class FailureWidget extends StatelessWidget {
             TextButton(
               onPressed: onRetry,
               style: ButtonStyle(
-                padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                   const EdgeInsets.symmetric(
                     horizontal: THDimens.size16,
                   ),
                 ),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(THDimens.size8),
                     side: BorderSide(color: themeData.disabledColor),
