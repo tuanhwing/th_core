@@ -8,7 +8,7 @@ class FailureWidget extends StatelessWidget {
   ///Constructor
   const FailureWidget({
     super.key,
-    this.imageWidth,
+    this.imageWidth = THDimens.size128,
     this.title,
     this.titleStyle,
     this.description,
@@ -75,16 +75,17 @@ class FailureWidget extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Text(
-                  '${title ?? tr('something_went_wrong').allInCaps}!',
+                  title ?? '${tr('something_went_wrong').allInCaps}!',
+                  textAlign: TextAlign.center,
                   style: titleStyle ??
                       themeData.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
-                  textAlign: TextAlign.center,
                 ),
                 if (descriptionStr.isNotEmpty)
                   Text(
                     descriptionStr.inCaps,
+                    textAlign: TextAlign.center,
                     style: descriptionStyle ??
                         themeData.textTheme.bodyMedium
                             ?.copyWith(color: themeData.hintColor),

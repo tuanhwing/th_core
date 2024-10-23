@@ -23,6 +23,8 @@ class THDimens {
   static const double size32= 32.0;
   ///64.0
   static const double size64 = 64.0;
+  ///128.0
+  static const double size128 = 128.0;
   ///300.0
   static const double size300 = 300.0;
 }
