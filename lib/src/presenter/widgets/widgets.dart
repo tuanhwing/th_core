@@ -6,3 +6,4 @@ export 'loading_widget.dart';
 export 'th_core_app.dart';
 export 'th_module.dart';
 export 'th_overlay_handler.dart';
+export 'th_text.dart';
