@@ -4,6 +4,8 @@ import 'package:flutter/scheduler.dart';
 
 import 'package:th_core/th_core.dart';
 
+import 'presenter/widgets/th_text.dart';
+
 ///abstract [THState] class used to building your StatefulWidget(Page)
 abstract class THState<FWidget extends StatefulWidget,
         FBloc extends THBaseBloc<dynamic, dynamic>> extends State<FWidget>
@@ -83,14 +85,14 @@ abstract class THState<FWidget extends StatefulWidget,
     if (negative != null) {
       actions.add(CupertinoDialogAction(
         onPressed: onNegativeTap,
-        child: Text(negative),
+        child: THText(negative),
       ),);
     }
 
     if (positive != null) {
       actions.add(CupertinoDialogAction(
         onPressed: onPositiveTap,
-        child: Text(positive),
+        child: THText(positive),
       ),);
     }
 

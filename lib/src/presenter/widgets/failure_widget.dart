@@ -3,6 +3,8 @@ import 'package:th_core/src/extensions/extensions.dart';
 import 'package:th_core/src/resources/th_dimens.dart';
 import 'package:th_dependencies/th_dependencies.dart';
 
+import 'th_text.dart';
+
 ///Failure widget
 class FailureWidget extends StatelessWidget {
   ///Constructor
@@ -74,7 +76,7 @@ class FailureWidget extends StatelessWidget {
             padding: const EdgeInsets.all(THDimens.size8),
             child: Column(
               children: <Widget>[
-                Text(
+                THText(
                   title ?? '${tr('something_went_wrong').allInCaps}!',
                   textAlign: TextAlign.center,
                   style: titleStyle ??
@@ -83,7 +85,7 @@ class FailureWidget extends StatelessWidget {
                       ),
                 ),
                 if (descriptionStr.isNotEmpty)
-                  Text(
+                  THText(
                     descriptionStr.inCaps,
                     textAlign: TextAlign.center,
                     style: descriptionStyle ??
@@ -111,7 +113,7 @@ class FailureWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              child: Text(
+              child: THText(
                 titleButton ?? tr('retry').inCaps,
                 style: buttonStyle ?? themeData.textTheme.titleMedium,
               ),

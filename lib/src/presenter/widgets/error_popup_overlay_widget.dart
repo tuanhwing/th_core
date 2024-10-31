@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:th_core/th_core.dart';
 
+import 'th_text.dart';
+
 ///Error Popup widget
 class ErrorPopUpOverlayWidget extends StatelessWidget {
   ///Constructor
@@ -37,7 +39,7 @@ class ErrorPopUpOverlayWidget extends StatelessWidget {
           left: THDimens.size64,
           right: THDimens.size64,
         ),
-        child: Text(
+        child: THText(
           title!,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
@@ -72,7 +74,7 @@ class ErrorPopUpOverlayWidget extends StatelessWidget {
                       vertical: THDimens.size16,
                       horizontal: THDimens.size32,
                     ),
-                    child: Text(
+                    child: THText(
                       message ?? '',
                       textAlign: TextAlign.center,
                     ),
@@ -92,7 +94,7 @@ class ErrorPopUpOverlayWidget extends StatelessWidget {
                     child: Container(
                       width: double.infinity,
                       alignment: Alignment.center,
-                      child: Text(
+                      child: THText(
                         okString ?? tr('ok').toUpperCase(),
                         style: themeData.textTheme.titleMedium?.apply(
                           color: themeData.primaryColor,
