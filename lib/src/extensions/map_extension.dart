@@ -3,7 +3,7 @@
 import 'package:th_logger/th_logger.dart';
 
 ///THMapExtension
-extension THMapExtension on Map<dynamic, dynamic> {
+extension THMapExtension on Map<String, dynamic> {
   ///Parse int
   int parseInt(String key) {
     int data = 0;
