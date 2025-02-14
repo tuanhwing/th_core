@@ -56,7 +56,10 @@ extension THMapExtension on Map<String, dynamic> {
   Map<K,V> parseMap<K, V>(String key) {
     Map<K, V> data = <K, V>{};
     try {
-      data = Map<K,V>.from((this[key] as Map<K, V>?) ?? <K, V>{});
+      final dynamic map = this[key];
+      if (map is Map) {
+        data = Map<K,V>.from(map);
+      }
     } catch(exception) {
       THLogger().e(exception.toString());
     }
@@ -68,7 +71,10 @@ extension THMapExtension on Map<String, dynamic> {
   List<T> parseList<T>(String key) {
     List<T> data = <T>[];
     try {
-      data = List<T>.from((this[key] as List<T>?) ?? <T>[]);
+      final dynamic list = this[key];
+      if (list is List) {
+        data = List<T>.from(list);
+      }
     } catch(exception) {
       THLogger().e(exception.toString());
     }
