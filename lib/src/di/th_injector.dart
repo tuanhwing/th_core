@@ -30,7 +30,8 @@ class THInjector {
       authorizationPrefix: authorizationPrefix,
       refreshTokenPath: refreshTokenPath,
       logoutPath: logoutPath,
-      receiveTimeout: 10000,
+      connectTimeout: 10000,
+      receiveTimeout: 20000,
     );
     _injector.registerLazySingleton<THNetworkRequester>(() => requester);
 
