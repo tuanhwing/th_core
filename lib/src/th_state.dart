@@ -96,7 +96,7 @@ abstract class THState<FWidget extends StatefulWidget,
       ),);
     }
 
-    showCupertinoModalPopup<void>(
+    showCupertinoDialog<void>(
       context: context,
       useRootNavigator: useRootNavigator,
       barrierDismissible: barrierDismissible,
